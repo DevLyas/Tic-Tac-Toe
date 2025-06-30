@@ -1,29 +1,37 @@
-# Tic-Tac-Toe
+# 🎮 Tic-Tac-Toe
 
-A simple terminal-based Tic Tac Toe game written in C++, designed for two players with a stylized ASCII grid.
+A simple terminal-based Tic Tac Toe game written in C++, designed for two players with a clear and styled ASCII grid.
 
-## Preview
+## 🖼️ Preview
 
 <pre>
-.-----------.  
-| X | O | X |  
-:---+---+---:  
-| O | X | O |  
-:---+---+---:  
-| X | O | X |  
+.-----------.
+| X | O | X |
+:---+---+---:
+| O | X | O |
+:---+---+---:
+| X | O | X |
 '-----------'
 </pre>
 
-## Features
+## ✨ Features
 
-- Two-player mode
-- Input validation
-- Stylized ASCII grid layout
-- Clear win/draw detection
+- Two-player mode (local)
+- Live-updating ASCII grid
+- Input validation (bounds & occupied cells)
+- Win and draw detection
+- Clear terminal screen between turns (ANSI-compatible)
 
-## How to Compile
+## ⚙️ Requirements
 
-Use a C++ compiler like `g++`:
+- A C++ compiler (e.g., `g++`, `clang++`)
+- Terminal/console that supports ANSI escape codes:
+  - ✅ Linux/macOS: works out of the box
+  - ✅ Windows 10+: works with ANSI enabled
+
+## 🚀 Getting Started
+
+To compile and run:
 
 ```bash
 g++ -o tic-tac-toe main.cpp
