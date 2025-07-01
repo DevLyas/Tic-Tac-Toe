@@ -32,11 +32,9 @@ void menu()
     while (true)
     {
         // Display menu options
-        clearScreen();
-        
-        std::cout << "Tic Tac Toe v1.1.0\n\n\n";
-        std::cout << "[1]. Start\n"
-        << "[2]. Quit\n";
+        std::cout << "Tic Tac Toe v1.1.0\n\n\n"
+                  << "[1]. Start\n"
+                  << "[2]. Quit\n";
         
         int input;
 
@@ -45,6 +43,7 @@ void menu()
         {
             std::cin.clear();
             std::cin.ignore(10000, '\n');
+            
             std::cout << "Invalid input! Please enter numbers only.\n";
             continue;            
         }
