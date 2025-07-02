@@ -8,7 +8,7 @@
 // Constants
 constexpr const char *VERSION = "v1.1.0";
 constexpr int GRID_SIZE = 3;
-constexpr char EMPTY_CELL = '?';
+constexpr char EMPTY_CELL = ' ';
 
 // Function declarations
 bool isRunning();
