@@ -5,53 +5,55 @@
 #include <windows.h>
 #endif
 
+// Constants
+constexpr const char *VERSION = "v1.1.0";
 constexpr int GRID_SIZE = 3;
-
+constexpr char EMPTY_CELL = '?';
 
 // Function declarations
-void menu();
+bool isRunning();
 void startGame();
-bool getValidInput(int&);
-bool getValidInput(int&, int&);
+bool getValidInput(int &);
+bool getValidInput(int &, int &);
 void enableAnsiEscape();
 void clearScreen();
-void displayGrid(const std::vector<std::vector<char>>&);
-bool checkWinner(const std::vector<std::vector<char>>&, char);
-bool checkDraw(const std::vector<std::vector<char>>&);
+void displayGrid(const std::vector<std::vector<char>> &);
+bool checkWinner(const std::vector<std::vector<char>> &, char);
+bool checkDraw(const std::vector<std::vector<char>> &);
 
 int main()
 {
-    menu();
+    isRunning();
     return 0;
 }
 
-void menu()
+bool isRunning()
 {
     enableAnsiEscape();
-    
+    clearScreen();
+
     while (true)
     {
         // Display menu options
-        std::cout << "Tic Tac Toe v1.1.0\n\n\n"
+        std::cout << "Tic Tac Toe - "
+                  << VERSION
+                  << "\n\n\n"
                   << "[1]. Start\n"
                   << "[2]. Quit\n";
-        
-        int input;
+
+        int input = 0;
 
         // Validate numeric input
         if (!getValidInput(input))
         {
-            std::cin.clear();
-            std::cin.ignore(10000, '\n');
-            
             std::cout << "Invalid input! Please enter numbers only.\n";
-            continue;            
+            continue;
         }
-        
+
         // Handle user input
         switch (input)
         {
-            case 1:
+        case 1:
             // Game loop for multiple rounds
             while (true)
             {
@@ -59,12 +61,14 @@ void menu()
                 std::cout << "Play again? (Y/N): ";
                 char c;
                 std::cin >> c;
-                if (c != 'Y' && c != 'y') break;
+                if (c != 'Y' && c != 'y')
+                    break;
             }
+            clearScreen();
             break;
-            case 2:
-            return;  // Exit the program
-            default:
+        case 2:
+            return 0; // Exit the program
+        default:
             std::cout << "Invalid input!\n";
         }
     }
@@ -72,24 +76,21 @@ void menu()
 
 void startGame()
 {
+    clearScreen();
+
     // Initialize empty 3x3 grid with '?'
-    std::vector<std::vector<char>> grid =
-    {
-        {'?', '?', '?'},
-        {'?', '?', '?'},
-        {'?', '?', '?'}
-    };
-    
+    std::vector<std::vector<char>> grid(GRID_SIZE, std::vector<char>(GRID_SIZE, EMPTY_CELL));
+
     bool isPlayerOneTurn = true;
     displayGrid(grid);
-    
+
     while (true)
     {
         char symbol = isPlayerOneTurn ? 'X' : 'O';
-        int row, col;
-        
+        int row = 0, col = 0;
+
         std::cout << "Player " << symbol << "'s Turn.\n";
-        
+
         // Validate input values
         if (!getValidInput(row, col))
         {
@@ -98,41 +99,41 @@ void startGame()
             std::cout << "Invalid input! Please enter numbers only.\n";
             continue;
         }
-        
-        // Check input is within valid range
+
+        // Check input is within valid range [1;3]
         if (row < 1 || row > GRID_SIZE || col < 1 || col > GRID_SIZE)
         {
             std::cout << "Invalid move! Row and Column must be between 1 and 3.\n";
             continue;
         }
-        
+
         // Check if the selected cell is already taken
-        if (grid[row - 1][col - 1] != '?')
+        if (grid[row - 1][col - 1] != EMPTY_CELL)
         {
             std::cout << "Invalid move! The cell is already occupied.\n";
             continue;
         }
-        
+
         // Place the player's symbol
         grid[row - 1][col - 1] = symbol;
-        
+
         // Display updated grid
         displayGrid(grid);
-        
+
         // Check for win condition
         if (checkWinner(grid, symbol))
         {
             std::cout << "Player " << symbol << " won!!!\n";
             break;
         }
-        
+
         // Check for draw condition
         if (checkDraw(grid))
         {
             std::cout << "It's a draw!\n";
             break;
         }
-        
+
         // Switch to the other player
         isPlayerOneTurn = !isPlayerOneTurn;
     }
@@ -141,18 +142,25 @@ void startGame()
 // Attempts to read an integer from input; returns true on success
 bool getValidInput(int &input)
 {
-    return static_cast<bool>(std::cin >> input);
+    if (std::cin >> input)
+        return true;
+
+    std::cin.clear();
+    std::cin.ignore(10000, '\n');
+    return false;
 }
 
 // Prompts the user for row and column input; returns true if both are valid integers
 bool getValidInput(int &row, int &col)
 {
     std::cout << "Row (1-3): ";
-    if (!(std::cin >> row)) return false;
-    
+    if (!(std::cin >> row))
+        return false;
+
     std::cout << "Column (1-3): ";
-    if (!(std::cin >> col)) return false;
-    
+    if (!(std::cin >> col))
+        return false;
+
     return true;
 }
 
@@ -177,7 +185,7 @@ void displayGrid(const std::vector<std::vector<char>> &grid)
     clearScreen();
 
     std::cout << ".-----------.\n";
-    
+
     for (int i = 0; i < GRID_SIZE; ++i)
     {
         std::cout << "|";
@@ -191,7 +199,7 @@ void displayGrid(const std::vector<std::vector<char>> &grid)
             std::cout << ":---+---+---:\n";
     }
 
-    std::cout << "'-----------'\n";
+    std::cout << "'-----------'\n\n";
 }
 
 bool checkWinner(const std::vector<std::vector<char>> &grid, char symbol)
@@ -222,7 +230,7 @@ bool checkDraw(const std::vector<std::vector<char>> &grid)
     {
         for (int j = 0; j < GRID_SIZE; ++j)
         {
-            if (grid[i][j] == '?')
+            if (grid[i][j] == EMPTY_CELL)
                 return false;
         }
     }
