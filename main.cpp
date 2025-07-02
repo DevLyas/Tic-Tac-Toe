@@ -78,7 +78,7 @@ void startGame()
 {
     clearScreen();
 
-    // Initialize empty 3x3 grid with '?'
+    // Initialize empty 3x3 grid
     std::vector<std::vector<char>> grid(GRID_SIZE, std::vector<char>(GRID_SIZE, EMPTY_CELL));
 
     bool isPlayerOneTurn = true;
