@@ -173,13 +173,17 @@ bool checkDraw(const Grid &grid)
 // Input with validation
 bool getInput(const std::string &prompt, int &result)
 {
-    char ch;
     std::cout << prompt;
-    std::cin >> ch;
+    std::cin >> result;
 
-    if (!isdigit(ch))
+    if (std::cin.fail())
+    {
+        std::cin.clear();
+        std::cin.ignore(1000, '\n');
+    
         return false;
+    }
 
-    result = ch - '1';
+    --result;
     return result >= 0 && result < GRID_SIZE;
 }
